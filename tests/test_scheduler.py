@@ -45,6 +45,7 @@ class TestScheduler(unittest.TestCase):
         start_dt = s._synthesize_datetime_obj(test_date_dt, start_time_str)
         stop_dt = s._synthesize_datetime_obj(test_date_dt, stop_time_str)
         
+        print(test_date_dt.date())
         for s_dt in schedule_l:
             print(f"{s_dt}")
             #
