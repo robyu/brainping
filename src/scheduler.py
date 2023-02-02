@@ -7,14 +7,14 @@ import numpy as np
 from numpy import random
 
 class Scheduler():
-    def __init__(self, start_time_str = "08:00:00", stop_time_str ="20:00:00", num_pings = 10, test_date_str=None):
+    def __init__(self, start_time_str = "08:00:00", stop_time_str ="20:00:00", num_pings = 10, today_date_str=None):
         """
-        test_date_str = baseline date for testing (rather than actual date)--basically rand seed; format is "YYYY-MM-DD"
+        today_date_str = baseline date for testing (rather than actual date)--basically rand seed; format is "YYYY-MM-DD"
         """
-        if test_date_str==None:
+        if len(today_date_str) <= 0:
             now_dt = datetime.now()
         else:
-            now_dt = datetime.strptime(test_date_str, "%Y-%m-%d")
+            now_dt = datetime.strptime(today_date_str, "%Y-%m-%d")
         #
 
         self.midnight_sec = self._synthesize_datetime_obj(now_dt, "00:00:00").timestamp()
@@ -38,6 +38,17 @@ class Scheduler():
             retval = [datetime.fromtimestamp(s) for s in self.ping_sec_list]
         #
         return retval
+
+    def __str__(self):
+        """
+        __str__ specifies the default string representation when you print this object
+        """
+        l = self.get_schedule(as_datetime=True)
+        s = ''
+        for n, t in enumerate(l):
+            s += f"{n}: {t}\n"
+        #
+        return s
         
     def _generate_ping_schedule(self, randseed, num_pings):
         #
