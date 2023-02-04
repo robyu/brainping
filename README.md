@@ -8,7 +8,7 @@ Second, you need to be able to receive email messages as text messages on your p
 Copy config-template.json to config.json and edit config.json to specify your emailer parameters:
 - smtp_server: the SMTP server address
 - smtp_port: the SMTP server port, typically 465
-- email_user: the "from" email address
+- email_user: the "from" email address; equivalent to your SMTP server login
 - email_dest: the destination email address, i.e. the email-to-SMS gateway
 
 Create a text file, e.g. "email-passwd.txt", which contains the SMTP server's login password.
@@ -18,17 +18,19 @@ You must also edit config.json to specify:
 - stop_time: the stop time for sending brainpings, again in HH:MM:SS format
 - num_pings: the number of brainpings to within the start-stop interval
 
+Based on Hurlburt's recommendations, you should also assign a different alert sound to messages which arrive from email_user; this drives a different behavior than "answer that text message." Search the web for "assign unique tone to text message."
+
 ## Usage
 Assuming that you've created config/config.json and config/email-pwd.txt:
-
-Run brainping: the script will execute and send brainpings until stop_time, then quit.
-```
-python brainping.py config/config.json config/email-pwd.txt
-```
 
 Test the SMTP server: send a test message, then quit
 ```
 python brainping.py config/config.json config/email-pwd.txt --debug-send-msg
+```
+
+Run brainping: the script will execute and send brainpings for 1 day, until stop_time, then quit.
+```
+python brainping.py config/config.json config/email-pwd.txt
 ```
 
 Print help
