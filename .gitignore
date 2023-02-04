@@ -4,6 +4,7 @@ tests/__pycache__
 .ipynb_checkpoints/
 config/email-pwd.txt
 config/config.json
+config/config-test.json
 
 
 
