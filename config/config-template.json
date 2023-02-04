@@ -1,0 +1,11 @@
+{
+    "smtp_server": "smtp.gmail.com",
+    "smtp_port": 465,
+    "email_user": "from-address@my-smtp-server",
+    "email_dest": "my-phone-number@my-sms-gateway",
+    "start_time": "09:00:00",
+    "stop_time": "18:00:00",
+    "num_pings": 6
+}
+
+
