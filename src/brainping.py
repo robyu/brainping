@@ -13,7 +13,7 @@ def parse_args():
 
     parser.add_argument("config_fname", help="fname of config json file")
     parser.add_argument("email_pwd_fname", help="fname of file containing email server password")
-    #parser.add_argument("-s", "--send-startup-msg", action="store_true", default=False, help="send a message upon init")
+    parser.add_argument("-f", "--forever", action="store_true", default=False, help="run forever (multiple days); otherwise, run for 1 day then quit; default is False")
     #
     # debug options
     parser.add_argument("-t", "--today-date-str", default="", help="""date string used in place of "now"; YYYY-mm-dd string""")
@@ -130,8 +130,41 @@ ping ({ping_index} / {self.num_pings}) @ {datetime.fromtimestamp(sched0_sec)}"""
             #
         #
         print(f"finished @ {now_dt}")
-
     
+def loop_forever(args, config_d):
+    bp = BrainPing(config_d['email_user'],
+                   args.email_pwd_fname,
+                   config_d['email_dest'],
+                   config_d['start_time'],
+                   config_d['stop_time'],
+                   config_d['num_pings'],
+                   today_date_str = args.today_date_str,
+                   fast_fwd_flag = args.debug_fast_fwd)
+    start_dt = datetime.now()
+    while True:
+        bp.run_one_day()   # exits at end of day
+
+        now_dt = datetime.now()
+
+        #
+        # loop until a new day
+        while now_dt.date()==start_dt.date():
+            print(f"it's still {now_dt.date()}; sleep for a while...")
+            time.sleep(60.0 * 60.0) # sleep one hour
+            now_dt = datetime.now()
+        #
+
+        # reinitialize for a new day
+        start_dt = datetime.now()
+        bp = BrainPing(config_d['email_user'],
+                       args.email_pwd_fname,
+                       config_d['email_dest'],
+                       config_d['start_time'],
+                       config_d['stop_time'],
+                       config_d['num_pings'],
+                       today_date_str = args.today_date_str,
+                       fast_fwd_flag = args.debug_fast_fwd)
+    #
         
 if __name__=="__main__":
     args = parse_args()
@@ -143,20 +176,31 @@ if __name__=="__main__":
     #
         
     #
-    bp = BrainPing(config_d['email_user'],
-                   args.email_pwd_fname,
-                   config_d['email_dest'],
-                   config_d['start_time'],
-                   config_d['stop_time'],
-                   config_d['num_pings'],
-                   today_date_str = args.today_date_str,
-                   fast_fwd_flag = args.debug_fast_fwd)
 
     if args.debug_send:
+        bp = BrainPing(config_d['email_user'],
+                       args.email_pwd_fname,
+                       config_d['email_dest'],
+                       config_d['start_time'],
+                       config_d['stop_time'],
+                       config_d['num_pings'],
+                       today_date_str = args.today_date_str,
+                       fast_fwd_flag = args.debug_fast_fwd)
         bp.send_test_msg()
         sys.exit(0)
-    else:
+    elif args.forever==False:
+        bp = BrainPing(config_d['email_user'],
+                       args.email_pwd_fname,
+                       config_d['email_dest'],
+                       config_d['start_time'],
+                       config_d['stop_time'],
+                       config_d['num_pings'],
+                       today_date_str = args.today_date_str,
+                       fast_fwd_flag = args.debug_fast_fwd)
         bp.run_one_day()
+    else:
+        assert args.forever==True
+        loop_forever(args, config_d)
     #
 
 
