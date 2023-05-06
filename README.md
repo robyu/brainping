@@ -2,7 +2,7 @@
 
 A Descriptive Experience Sampling Method
 
-## ## Intro
+## Intro
 
 After reading [Temple Grandin's book on Visual Thinking](https://www.templegrandin.com/templegrandinbooks.html), I was inspired to try Russell Hurlbert's Descriptive Experience Sampling (DES) -- [wikipedia entry](https://en.wikipedia.org/wiki/Descriptive_Experience_Sampling)-- on myself to determine my cognitive style.  The intent of DES is to capture a person's inner experience--thoughts, perceptions--at random times throughout the day; this method avoids the mental editing associated with retrospection. 
 
@@ -89,7 +89,7 @@ You should see SMTP connection stuff:
 python src/brainping.py config/config.json config/email-pwd.txt
 ```
 
-Upon executing, brainping will print the randomly selected ping schedule for that day, send the beeps, then stop at the configured time. Note that brainping.py only runs for one day.
+Upon executing, brainping will print the randomly selected ping schedule for that day, send the beeps, then stop at the configured time. You can use the "--forever" flag to run multiple days.
 
 ```
 ping schedule:
